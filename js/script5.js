@@ -1,4 +1,4 @@
-// empty array for displayed quotes
+// initalize variables - including quotes array
 var displayedQuotes = [];
 var usedQuoteIndex = 0;
 var selectorIndex = null;
@@ -6,6 +6,7 @@ var randomQuote = null;
 var tempStorage = null;
 var selectedQuote = null;
 var quoteConstruct = null;
+//-------------------------------------------------------------------------------------------------------------------
 // quotes - array of objects for random selection
 var quotes = [{
     quote: "If we lose all of our wealth and are only left with love then, indeed, we shall never be poor.",
@@ -74,23 +75,29 @@ var quotes = [{
     tags: ["oppression", "perception"]
 }];
 
+//Added more properties to the quote object. For example, a tags property could include a list of "tags" like -- "humor", "business", "politics" //-- to categorize each quote.
+
+//-------------------------------------------------------------------------------------------------------------------------
 function getRandomQuote() {
     //selects a un-used random quote object from the quotes array
     //if all qoutes have been used , select a random used quote
+    //getRandomQuote function does not return a duplicate quote until all quotes have been returned once
     if (quotes.length > 0) {
-        selectorIndex = Math.floor((Math.random() * quotes.length) + 1);
+        selectorIndex = Math.floor((Math.random() * quotes.length));
         randomQuote = quotes[selectorIndex];
         //removed selected qoute from list and add it to the list of used quotes
         tempStorage = quotes.splice(selectorIndex, 1);
         displayedQuotes[usedQuoteIndex] = tempStorage[0]; 
         usedQuoteIndex = usedQuoteIndex + 1;
     } else {
-        selectorIndex = Math.floor((Math.random() * displayedQuotes.length) + 1);
+        selectorIndex = Math.floor((Math.random() * displayedQuotes.length));
         randomQuote = displayedQuotes[selectorIndex];
     }
     //returns the randomly selected quote object;
     return randomQuote;
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------
 
 function changeBackgroundColor() {
   //randomly selects one of 7 colors and changes the background color to that color
@@ -99,16 +106,27 @@ function changeBackgroundColor() {
     document.body.style.backgroundColor = colorChoices[colorSelector];
 } 
 
+//-----------------------------------------------------------------------------------------------------------------------------
+
 function printQuote() {
   	selectedQuote = getRandomQuote();
   	if (selectedQuote.hasOwnProperty("citation")) {
+        //printQuote constructs a string using the different properties of the quote object using the following HTML template: 
         quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p>" + "<p class='source'>" + selectedQuote.source + "<span class='citation'>" + selectedQuote.citation + "</span>" + "<span class='year'>" + selectedQuote.year + "</span> </p>";
     } else {
+        //printQuote doesn't add a <span class="citation"> for a missing citation or a <span class="year"> if the year property is missing
         quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p> <p class= 'source'>" + selectedQuote.source;
     }
 
     document.getElementById('quote-box').innerHTML = quoteConstruct;
+    //Background color of page changes each time a new quote is displayed
     changeBackgroundColor();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------
+
 // event listener for button that generates random quote    
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
+
+// Refresh the quote after a set amount of time. every 30 seconds
+setInterval(printQuote,30000);
