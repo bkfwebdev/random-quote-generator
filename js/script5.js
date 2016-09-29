@@ -1,4 +1,12 @@
+// empty array for displayed quotes
 var displayedQuotes = [];
+var usedQuoteIndex = 0;
+var selectorIndex = null;
+var randomQuote = null;
+var tempStorage = null;
+var selectedQuote = null;
+var quoteConstruct = null;
+// quotes - array of objects for random selection
 var quotes = [{
     quote: "If we lose all of our wealth and are only left with love then, indeed, we shall never be poor.",
     source: "Stephen Richards ",
@@ -19,7 +27,6 @@ var quotes = [{
     tags: ["knowledge", "speech "],
     citation: "The Wonderful Wizard of Oz",
     year: " 1900"
-
 }, {
     quote: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.",
     source: "Isaac Asimov ",
@@ -67,39 +74,41 @@ var quotes = [{
     tags: ["oppression", "perception"]
 }];
 
-function getRandomQuote(randomQuote) {
-    var selectorIndex = null;
+function getRandomQuote() {
     //selects a un-used random quote object from the quotes array
     //if all qoutes have been used , select a random used quote
     if (quotes.length > 0) {
         selectorIndex = Math.floor((Math.random() * quotes.length) + 1);
         randomQuote = quotes[selectorIndex];
         //removed selected qoute from list and add it to the list of used quotes
-        displayedQuotes.push(quotes.splice(selectorIndex, 1));
+        tempStorage = quotes.splice(selectorIndex, 1);
+        displayedQuotes[usedQuoteIndex] = tempStorage[0]; 
+        usedQuoteIndex = usedQuoteIndex + 1;
     } else {
         selectorIndex = Math.floor((Math.random() * displayedQuotes.length) + 1);
         randomQuote = displayedQuotes[selectorIndex];
     }
     //returns the randomly selected quote object;
     return randomQuote;
-};
+}
 
 function changeBackgroundColor() {
+  //randomly selects one of 7 colors and changes the background color to that color
     var colorChoices = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
     var colorSelector = Math.floor((Math.random() * 6) + 1);
     document.body.style.backgroundColor = colorChoices[colorSelector];
-};
+} 
 
 function printQuote() {
-    var selectedQuote = getRandomQuote(selectedQuote);
-    if ("citation" in selectedQuote) {
-        var quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p>" + "<p class='source'>" + selectedQuote.source + "<span class='citation'>" + selectedQuote.citation + "</span>" + "<span class='year'>" + selectedQuote.year + "</span> </p>";
+  	selectedQuote = getRandomQuote();
+  	if (selectedQuote.hasOwnProperty("citation")) {
+        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p>" + "<p class='source'>" + selectedQuote.source + "<span class='citation'>" + selectedQuote.citation + "</span>" + "<span class='year'>" + selectedQuote.year + "</span> </p>";
     } else {
-        var quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p> <p class= 'source'>" + selectedQuote.source;
-    };
+        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p> <p class= 'source'>" + selectedQuote.source;
+    }
 
     document.getElementById('quote-box').innerHTML = quoteConstruct;
     changeBackgroundColor();
-};
+}
 // event listener for button that generates random quote    
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
