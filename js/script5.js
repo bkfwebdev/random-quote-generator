@@ -73,6 +73,12 @@ var quotes = [{
     quote: "To hold a people in oppression you have to convince them first that they are supposed to be oppressed.",
     source: "John Henrik Clarke",
     tags: ["oppression", "perception"]
+}, {
+    quote:"You can do anything but not everything",
+    source:"David Allen",
+    citation:"Making it all work",
+    year:" 2009",
+    tags: ["time","life","skill"]
 }];
 
 //Added more properties to the quote object. For example, a tags property could include a list of "tags" like -- "humor", "business", "politics" //-- to categorize each quote.
@@ -101,7 +107,7 @@ function getRandomQuote() {
 
 function changeBackgroundColor() {
   //randomly selects one of 7 colors and changes the background color to that color
-    var colorChoices = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+    var colorChoices = ["red", "orange", "purple ", "green", "blue", "indigo", "violet"];
     var colorSelector = Math.floor((Math.random() * 6) + 1);
     document.body.style.backgroundColor = colorChoices[colorSelector];
 } 
@@ -123,10 +129,16 @@ function printQuote() {
     changeBackgroundColor();
 }
 
+function getWhatTheySaid(){
+var myQuote = httpRequest.open('GET', 'http://www.example.org/some.file', true);
+console.log(myQuote);
+
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 
 // event listener for button that generates random quote    
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
 // Refresh the quote after a set amount of time. every 30 seconds
-setInterval(printQuote,30000);
+setInterval(printQuote,60000);

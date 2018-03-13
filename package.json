@@ -1,0 +1,22 @@
+{
+  "name": "techdegreeproject1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkfwebdev/techdegreeproject1.git"
+  },
+  "author": "bkfwebdev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bkfwebdev/techdegreeproject1/issues"
+  },
+  "homepage": "https://github.com/bkfwebdev/techdegreeproject1#readme",
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}
