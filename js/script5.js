@@ -1,4 +1,6 @@
 // initalize variables - including quotes array
+const request = require('request');
+var targetURL = "https://talaikis.com/api/quotes/random/";
 var displayedQuotes = [];
 var usedQuoteIndex = 0;
 var selectorIndex = null;
@@ -101,6 +103,19 @@ function getRandomQuote() {
     }
     //returns the randomly selected quote object;
     return randomQuote;
+}
+
+function getRandomQuote2 (){
+    request(targetURL, { json: true }, (err, res, body) => {
+        if (err) { return console.log(err); }
+        // console.log(body);
+        // console.log(typeof(body));
+        // console.dir(body);
+        console.log(body.quote);
+        // console.log(typeof(body));
+        // console.log(body.contents.quotes[0].quote);
+      });
+      return body;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------

@@ -11,7 +11,7 @@ https.get(targetURL, (resp) => {
  
   // The whole response has been received. Print out the result.
   resp.on('end', () => {
-    console.log(JSON.parse(data));
+    console.dir(JSON.parse(data));
   });
  
 }).on("error", (err) => {
