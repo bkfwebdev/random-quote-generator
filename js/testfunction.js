@@ -1,5 +1,17 @@
-var targetURL = "https://quotes.rest/qod.json?category=inspire";
-const https = require('https');
+var targetURL = "https://talaikis.com/api/quotes/random/";
+function makeHttpObject() {
+  try {return new XMLHttpRequest();}
+  catch (error) {}
+  try {return new ActiveXObject("Msxml2.XMLHTTP");}
+  catch (error) {}
+  try {return new ActiveXObject("Microsoft.XMLHTTP");}
+  catch (error) {}
+
+  throw new Error("Could not create HTTP request object.");
+}
+console.log(typeof(makeHttpObject()));
+
+const https = makeHttpObject();
  
 https.get(targetURL, (resp) => {
   let data = '';

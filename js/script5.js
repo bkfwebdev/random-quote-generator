@@ -1,5 +1,5 @@
 // initalize variables - including quotes array
-const request = require('request');
+// const request = require('request');
 var targetURL = "https://talaikis.com/api/quotes/random/";
 var displayedQuotes = [];
 var usedQuoteIndex = 0;
@@ -8,76 +8,88 @@ var randomQuote = null;
 var tempStorage = null;
 var selectedQuote = null;
 var quoteConstruct = null;
+
+function makeHttpObject() {
+    try {return new XMLHttpRequest();}
+    catch (error) {}
+    try {return new ActiveXObject("Msxml2.XMLHTTP");}
+    catch (error) {}
+    try {return new ActiveXObject("Microsoft.XMLHTTP");}
+    catch (error) {}
+  
+    throw new Error("Could not create HTTP request object.");
+  }
+
 //-------------------------------------------------------------------------------------------------------------------
 // quotes - array of objects for random selection
 var quotes = [{
     quote: "If we lose all of our wealth and are only left with love then, indeed, we shall never be poor.",
-    source: "Stephen Richards ",
+    author: "Stephen Richards ",
     tags: ["metaphysics", "life"]
 }, {
     quote: "You are an aperture through which the universe is looking at and exploring itself.",
-    source: "Alan W. Watts ",
+    author: "Alan W. Watts ",
     tags: ["metaphysics", "life"]
 }, {
     quote: "Perceive that which cannot be seen with the eye.",
-    source: "Miyamoto Musashi ",
+    author: "Miyamoto Musashi ",
     tags: ["metaphysics", "life"],
     citation: "A Book of Five Rings",
     year: " 1642"
 }, {
     quote: "Some people without brains do an awful lot of talking, don't you think?",
-    source: "L. Frank Baum ",
+    author: "L. Frank Baum ",
     tags: ["knowledge", "speech "],
     citation: "The Wonderful Wizard of Oz",
     year: " 1900"
 }, {
     quote: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.",
-    source: "Isaac Asimov ",
+    author: "Isaac Asimov ",
     tags: ["life", "science", "knowledge", "wisdom"]
 
 }, {
     quote: "Anyone who has never made a mistake has never tried anything new.",
-    source: "Albert Einstein ",
+    author: "Albert Einstein ",
     tags: ["weapons", "war"]
 
 }, {
     quote: "Do not look upon this world with fear and loathing. Bravely face whatever the gods offer.",
-    source: "Morihei Ueshiba ",
+    author: "Morihei Ueshiba ",
     tags: ["martial arts", "training", "peace"]
 
 }, {
     quote: "If you love life, don't waste time, for time is what life is made up of.",
-    source: "Bruce Lee ",
+    author: "Bruce Lee ",
     tags: ["life", "time"]
 }, {
     quote: "Both the man of science and the man of action live always at the edge of mystery, surrounded by it.",
-    source: "J. Robert Oppenheimer ",
+    author: "J. Robert Oppenheimer ",
     tags: ["science", "philosophy"]
 
 }, {
     quote: "Magic is the sole science not accepted by scientists, because they can't understand it.",
-    source: "Houdini ",
+    author: "Houdini ",
     tags: ["science", "magic"]
 
 }, {
     quote: "What we observe is not nature itself, but nature exposed to our method of questioning.",
-    source: "Werner Heisenberg ",
+    author: "Werner Heisenberg ",
     tags: ["nature", "observation", "science"]
 
 }, {
     quote: "To seize control over the laws of Mother Nature one must attain self-mastery.",
-    source: "Yehuda Berg ",
+    author: "Yehuda Berg ",
     citation: "The 72 Names of God: Technology for the Soul",
     year: " 2004"
 
 
 }, {
     quote: "To hold a people in oppression you have to convince them first that they are supposed to be oppressed.",
-    source: "John Henrik Clarke",
+    author: "John Henrik Clarke",
     tags: ["oppression", "perception"]
 }, {
     quote:"You can do anything but not everything",
-    source:"David Allen",
+    author:"David Allen",
     citation:"Making it all work",
     year:" 2009",
     tags: ["time","life","skill"]
@@ -98,24 +110,19 @@ function getRandomQuote() {
         displayedQuotes[usedQuoteIndex] = tempStorage[0]; 
         usedQuoteIndex = usedQuoteIndex + 1;
     } else {
-        selectorIndex = Math.floor((Math.random() * displayedQuotes.length));
-        randomQuote = displayedQuotes[selectorIndex];
+        // selectorIndex = Math.floor((Math.random() * displayedQuotes.length));
+        // randomQuote = displayedQuotes[selectorIndex];
+        randomQuote = getRandomQuote2();
     }
     //returns the randomly selected quote object;
     return randomQuote;
 }
 
 function getRandomQuote2 (){
-    request(targetURL, { json: true }, (err, res, body) => {
-        if (err) { return console.log(err); }
-        // console.log(body);
-        // console.log(typeof(body));
-        // console.dir(body);
-        console.log(body.quote);
-        // console.log(typeof(body));
-        // console.log(body.contents.quotes[0].quote);
-      });
-      return body;
+let request = makeHttpObject();
+request.open("GET", targetURL, false);
+request.send(null);
+return(JSON.parse(request.responseText));
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -133,10 +140,10 @@ function printQuote() {
   	selectedQuote = getRandomQuote();
   	if (selectedQuote.hasOwnProperty("citation")) {
         //printQuote constructs a string using the different properties of the quote object using the following HTML template: 
-        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p>" + "<p class='source'>" + selectedQuote.source + "<span class='citation'>" + selectedQuote.citation + "</span>" + "<span class='year'>" + selectedQuote.year + "</span> </p>";
+        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p>" + "<p class='source'>" + selectedQuote.author + "<span class='citation'>" + selectedQuote.citation + "</span>" + "<span class='year'>" + selectedQuote.year + "</span> </p>";
     } else {
         //printQuote doesn't add a <span class="citation"> for a missing citation or a <span class="year"> if the year property is missing
-        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p> <p class= 'source'>" + selectedQuote.source;
+        quoteConstruct = "<p class='quote'>" + selectedQuote.quote + "</p> <p class= 'author'>" + selectedQuote.author;
     }
 
     document.getElementById('quote-box').innerHTML = quoteConstruct;
@@ -144,11 +151,6 @@ function printQuote() {
     changeBackgroundColor();
 }
 
-function getWhatTheySaid(){
-var myQuote = httpRequest.open('GET', 'http://www.example.org/some.file', true);
-console.log(myQuote);
-
-}
 
 //------------------------------------------------------------------------------------------------------------------------------
 

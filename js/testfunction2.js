@@ -5,7 +5,7 @@ const request = require('request');
   // console.log(body);
   // console.log(typeof(body));
   // console.dir(body);
-  console.log(body.quote);
+  console.log(body);
   // console.log(typeof(body));
   // console.log(body.contents.quotes[0].quote);
 });
